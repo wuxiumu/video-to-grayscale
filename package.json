@@ -1,0 +1,25 @@
+{
+  "name": "video-to-grayscale",
+  "version": "0.1.0",
+  "description": "Local grayscale video conversion with a browser UI and CLI",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "bin": {
+    "video-gray": "src/cli.js"
+  },
+  "scripts": {
+    "start": "node src/cli.js serve",
+    "convert": "node src/cli.js convert",
+    "doctor": "node src/cli.js doctor",
+    "check": "node scripts/check.js",
+    "test:browser": "node scripts/browser-test.js",
+    "setup:depth": "node scripts/setup-depth.js",
+    "test:depth": "node scripts/depth-browser-test.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

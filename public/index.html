@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mono · 本地动作深度工作台</title><link rel="stylesheet" href="/style.css"><script type="module" src="/app.js"></script></head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Mono 首页"><span class="mark">◐</span> mono<span class="brand-dot">.</span></a>
+  <div class="sidebar-caption">VIDEO TO GRAYSCALE</div>
+  <nav><a class="nav-item active" href="#workspace"><span>▦</span> 转换工作台 <span class="nav-index">01</span></a><a class="nav-item" href="#queue"><span>☷</span> 任务队列 <span id="nav-count" class="nav-index">0</span></a><button class="nav-item" id="help"><span>⌘</span> 命令行用法</button></nav>
+  <div class="sidebar-bottom"><div class="privacy-icon">⌁</div><strong>你的素材，留在本机。</strong><p>无需账号，无云端上传。<br>让处理视频这件事，简单一点。</p><span class="version">LOCAL WORKSPACE / v0.1</span></div>
+</aside>
+<main id="workspace">
+  <header class="topbar"><div><span class="breadcrumb">工作空间</span><span class="slash">/</span> 深度视频</div><span id="connection" class="connection">● 正在连接本机服务</span></header>
+  <section class="intro"><div><div class="eyebrow">REFERENCE MOTION. LOCAL DEPTH.</div><h1>保留动作，<span>提取空间。</span></h1><p>把参考视频变成无音频深度素材，为动作迁移保留轮廓与遮挡。</p></div><div class="intro-art" aria-hidden="true"><i></i><span>COLOR → MONO</span></div></section>
+  <div id="notice" class="notice" role="alert" hidden></div>
+  <div class="workspace-grid">
+    <section class="panel source-panel"><div class="section-heading"><div><span class="step">01</span><h2>添加视频</h2></div><span class="subtle">原文件始终保留</span></div>
+      <div class="dropzone" id="dropzone"><div class="upload-icon" aria-hidden="true">↥</div><h3>把视频拖到这里</h3><p>或 <button class="text-button" id="choose">选择本机文件</button></p><span class="format-note">MP4 · MOV · MKV · WEBM · M4V · AVI</span><input type="file" id="file-input" accept=".mp4,.mov,.mkv,.webm,.m4v,.avi" multiple hidden></div>
+      <div class="import-note">拖拽会复制到本机暂存目录。大视频推荐下方目录直读。</div>
+      <div id="upload-status" class="upload-status" hidden><span id="upload-label"></span><progress id="upload-progress" max="100" value="0"></progress><button id="cancel-upload" class="small-button">取消导入</button></div>
+      <div class="file-toolbar"><div><strong>目录直读</strong><span class="tag">无需复制</span></div><button id="refresh-files" class="text-button">↻ 刷新</button></div>
+      <div class="pathline"><button id="parent" class="small-button" hidden>↑ 上一级</button><span id="directory-label">正在读取目录…</span></div>
+      <div class="selection-bar"><label><input id="select-all" type="checkbox"> 选择当前目录</label><span id="selected-count">已选 0 个</span></div>
+      <div id="files" class="files"><p class="empty">正在加载素材…</p></div>
+      <div id="imported-section" hidden><div class="imported-title">已导入本机暂存</div><div id="imports" class="files"></div></div>
+    </section>
+    <div class="right-column"><section class="panel settings-panel"><div class="section-heading"><div><span class="step">02</span><h2>导出设置</h2></div><span class="tiny-label">OUTPUT</span></div>
+      <label class="field-label" for="mode">处理类型</label><select id="mode"><option value="depth">深度视频 · 动作参考（默认）</option><option value="grayscale">普通灰度 · 去除颜色</option></select>
+      <p id="mode-hint" class="field-hint">本地模型估计相对远近；不是米制距离。</p>
+      <div id="depth-controls"><label class="field-label" for="depth-size">深度细节</label><select id="depth-size"><option value="392">轻量 · 392（推荐 M2）</option><option value="518">精细 · 518（更慢）</option></select><label class="invert-control"><input type="checkbox" id="invert-depth"> 反转深度（默认近白远黑）</label></div>
+      <label class="field-label" for="preset">编码模式</label><div class="select-wrap"><select id="preset"><option value="quality">质量优先 · 软件编码</option><option value="speed">速度优先 · 快速编码</option></select></div><p class="field-hint">保留分辨率，以 H.264 / MP4 导出。</p>
+      <label class="field-label" for="audio">音频处理</label><select id="audio"><option value="mute">无音频 · 默认</option><option value="auto">保留音频 · AAC 复制，其他转码</option><option value="aac">统一转为 AAC</option></select><p class="field-hint">自动模式下，其他音频格式转为 AAC。</p>
+      <div class="output-folder"><span class="field-label">输出目录</span><code id="output-path">—</code></div>
+      <div class="export-notes"><span id="mode-note">✓ 相对深度，保留结构与遮挡</span><span>✓ 新文件导出，不覆盖原片</span><span>↳ 仅主视频 + 首条音轨，字幕不保留</span><span>↳ 暂不支持 HDR；体积可能增大</span></div>
+      <button class="primary" id="convert" disabled>开始转换 <span id="convert-count">→</span></button>
+    </section><div class="environment"><span id="engine-dot" class="engine-dot"></span><div><strong id="engine-title">检查转换引擎…</strong><p id="engine-detail">FFmpeg · 本机处理</p></div></div></div>
+  </div>
+  <section class="panel queue-panel" id="queue"><div class="section-heading"><div><span class="step">03</span><h2>任务队列</h2><span id="queue-summary" class="subtle">准备好后，从添加视频开始</span></div><div><button id="clear-ended" class="small-button" title="移除已结束任务记录及其本机暂存副本，保留原片和导出结果">清理已结束</button><button id="pause" class="small-button">Ⅱ 暂停队列</button></div></div><div class="queue-labels"><span>视频 / 状态</span><span>转换进度</span><span>操作</span></div><div id="jobs"><div class="queue-empty"><span>☷</span><strong>光影，即将就绪</strong><p>添加视频后，转换进度和结果会出现在这里。</p></div></div></section>
+  <footer><span>MADE FOR YOUR LOCAL WORKFLOW</span><span>浏览器界面 · 原生 FFmpeg · 串行批量处理</span></footer>
+</main>
+<dialog id="player-dialog"><div class="dialog-header"><h2 id="player-title">转换结果</h2><button id="close-player" class="small-button">关闭 ✕</button></div><video id="player" controls playsinline></video><p id="player-detail"></p></dialog>
+<dialog id="help-dialog"><div class="dialog-header"><h2>在终端快速转换</h2><button id="close-help" class="small-button">关闭 ✕</button></div><p>在项目目录中执行，页面和 CLI 使用同一套转换核心。</p><pre>npm run convert -- video.mp4
+
+npm run convert -- --input-dir ./test --recursive
+
+npm run convert -- video.mp4 --mode grayscale --audio auto
+
+npm run doctor</pre><p>默认深度 + 无音频。先运行 npm run setup:depth 安装模型。--mode grayscale 切换普通灰度；--json 获取结构化结果。</p></dialog>
+</body></html>

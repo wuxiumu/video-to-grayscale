@@ -1,0 +1,6 @@
+{
+  "id": "depth-anything/Depth-Anything-V2-Small-hf",
+  "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+  "license": "Apache-2.0",
+  "files": ["config.json", "preprocessor_config.json", "model.safetensors", "README.md"]
+}

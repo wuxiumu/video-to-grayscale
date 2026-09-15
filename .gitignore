@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+.grayscale/
+output/
+coverage/
+test/*
+!test/.gitkeep
+tests/
+plan.md
+*.log
+
+.venv/
+.models/
+__pycache__/

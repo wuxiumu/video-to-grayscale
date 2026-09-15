@@ -1,0 +1,6 @@
+# Local depth inference environment; output contract and sample results: doc/07 and doc/08.
+torch==2.14.0
+transformers==4.57.6
+av==16.1.0
+Pillow==12.3.0
+numpy==2.5.3
