@@ -102,3 +102,10 @@ A：微信 `qingbao199101`，备注「Mono深度视频」。
 | 微信赞赏码 | 支付宝收款码 |
 |---|---|
 | ![微信赞赏码](https://chiguashentan-test.oss-cn-beijing.aliyuncs.com/wxprogram/zan/20261002185236_31_227.png) | ![支付宝收款码](https://chiguashentan-test.oss-cn-beijing.aliyuncs.com/wxprogram/zan/20261002185309_32_227.jpg) |
+
+## 冒烟自检
+
+```bash
+bash scripts/smoke.sh
+```
+
